@@ -51,7 +51,6 @@ export async function CreateVehicle(
 
   const entity = coords ? OxVehicle.spawn(data.model, coords as Vector3, heading || 0) : 0;
 
-  if (!entity || !DoesEntityExist(entity)) return;
   if (!data.vin && (data.owner || data.group)) data.vin = await OxVehicle.generateVin(vehicleData);
   if (data.vin && !data.owner && !data.group) delete data.vin;
 
@@ -63,8 +62,6 @@ export async function CreateVehicle(
         : await OxVehicle.generatePlate();
 
   const metadata = data.data || ({} as { properties?: VehicleProperties; [key: string]: any });
-  const properties = data.properties || metadata.properties || ({} as VehicleProperties);
-  delete metadata.properties;
 
   if (!data.id && data.vin) {
     data.id = await CreateNewVehicle(
@@ -79,7 +76,10 @@ export async function CreateVehicle(
     );
   }
 
-  if (!entity) return;
+  if (!entity || !DoesEntityExist(entity)) return;
+
+  const properties = data.properties || metadata.properties || ({} as VehicleProperties);
+  delete metadata.properties;
 
   return new OxVehicle(
     entity,
