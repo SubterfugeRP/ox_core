@@ -37,7 +37,6 @@ async function StartSession() {
   NetworkEndTutorialSession();
   SetPlayerControl(cache.playerId, true, 0);
   SetPlayerInvincible(cache.playerId, false);
-  SetMaxWantedLevel(0);
   NetworkSetFriendlyFireOption(true);
   SetPlayerHealthRechargeMultiplier(cache.playerId, 0.0);
 }
